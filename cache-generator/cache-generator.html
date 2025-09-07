@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Road Coordinates Cache Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #2c3e50;
+        }
+
+        .config-status {
+            background: #e8f5e8;
+            border: 1px solid #4caf50;
+            color: #2e7d32;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            display: none;
+        }
+
+        .config-status.error {
+            background: #ffebee;
+            border-color: #f44336;
+            color: #c62828;
+        }
+
+        .progress {
+            background: #ecf0f1;
+            border-radius: 10px;
+            height: 20px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, #3498db, #2980b9);
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .log {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 20px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            height: 300px;
+            overflow-y: auto;
+            margin: 20px 0;
+        }
+
+        .controls {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 0 10px;
+        }
+
+        button:hover {
+            background: #2980b9;
+        }
+
+        button:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+        }
+
+        .output {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+
+        .road-summary {
+            background: #f8f9fa;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin: 20px 0;
+        }
+
+        .road-summary h4 {
+            margin: 0 0 10px 0;
+            color: #2c3e50;
+        }
+
+        .road-list {
+            columns: 2;
+            column-gap: 20px;
+            font-size: 14px;
+        }
+
+        .road-list div {
+            break-inside: avoid;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🛣️ Road Coordinates Cache Generator</h1>
+            <p>Generate pre-cached coordinates for Bulgaria road network using external configuration</p>
+        </div>
+
+        <div id="configStatus" class="config-status">
+            <strong>📂 Configuration Status:</strong> <span id="configStatusText">Loading...</span>
+        </div>
+
+        <div id="roadSummary" class="road-summary" style="display: none;">
+            <h4>📋 Roads to Process:</h4>
+            <div id="roadList" class="road-list"></div>
+            <p><strong>Total:</strong> <span id="totalRoads">0</span> roads</p>
+        </div>
+
+        <div class="warning">
+            <strong>⚠️ Warning:</strong> This tool makes API calls to OSRM. Use it only when you need to update cached
+            data. The process respects rate limits with 1-second delays between requests.
+        </div>
+
+        <div class="controls">
+            <button id="generateBtn" onclick="generateCache()" disabled>Generate Cached Coordinates</button>
+            <button id="copyBtn" onclick="copyToClipboard()" disabled>Copy to Clipboard</button>
+            <button id="downloadBtn" onclick="downloadFile()" disabled>Download File</button>
+        </div>
+
+        <div class="progress">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <div id="progressText">Waiting for configuration to load...</div>
+
+        <div class="log" id="logOutput"></div>
+
+        <div class="output" id="cacheOutput" style="display: none;">
+            <h3>Generated Cache Data (Copy this to roads-data-cached.js):</h3>
+            <pre id="cacheData"></pre>
+        </div>
+    </div>
+
+    <!-- Load external configuration -->
+    <script src="roads-config.js"></script>
+    <script>
+        let generatedData = null;
+        let configLoaded = false;
+
+        // Check if configuration is loaded
+        function checkConfiguration() {
+            const configStatus = document.getElementById('configStatus');
+            const configStatusText = document.getElementById('configStatusText');
+            const generateBtn = document.getElementById('generateBtn');
+            const progressText = document.getElementById('progressText');
+            const roadSummary = document.getElementById('roadSummary');
+            const roadList = document.getElementById('roadList');
+            const totalRoads = document.getElementById('totalRoads');
+
+            if (typeof window.RoadsConfig === 'undefined') {
+                configStatus.className = 'config-status error';
+                configStatus.style.display = 'block';
+                configStatusText.textContent = 'Configuration file (roads-config.js) not found or failed to load!';
+                progressText.textContent = 'Cannot proceed without configuration file.';
+                log('❌ Configuration file not loaded. Please ensure roads-config.js is in the same folder.');
+                return false;
+            }
+
+            const { ROAD_TRACKS } = window.RoadsConfig;
+
+            // Count total roads
+            let totalCount = 0;
+            const roadsByType = {};
+
+            for (const [roadType, roads] of Object.entries(ROAD_TRACKS)) {
+                if (roads.length > 0) {
+                    roadsByType[roadType] = roads.length;
+                    totalCount += roads.length;
+                }
+            }
+
+            if (totalCount === 0) {
+                configStatus.className = 'config-status error';
+                configStatus.style.display = 'block';
+                configStatusText.textContent = 'No roads found in configuration!';
+                progressText.textContent = 'Configuration contains no road data.';
+                return false;
+            }
+
+            // Display success status
+            configStatus.className = 'config-status';
+            configStatus.style.display = 'block';
+            configStatusText.textContent = `Successfully loaded ${totalCount} roads from configuration file.`;
+
+            // Show road summary
+            roadSummary.style.display = 'block';
+            totalRoads.textContent = totalCount;
+
+            // Create road list
+            let roadListHTML = '';
+            for (const [roadType, roads] of Object.entries(ROAD_TRACKS)) {
+                if (roads.length > 0) {
+                    roadListHTML += `<div><strong>${roadType} (${roads.length}):</strong></div>`;
+                    roads.forEach(road => {
+                        roadListHTML += `<div>• ${road.name}</div>`;
+                    });
+                }
+            }
+            roadList.innerHTML = roadListHTML;
+
+            // Enable generate button
+            generateBtn.disabled = false;
+            progressText.textContent = `Ready to generate cache for ${totalCount} roads...`;
+
+            log(`✅ Configuration loaded: ${totalCount} roads found`);
+            for (const [roadType, count] of Object.entries(roadsByType)) {
+                log(`📂 ${roadType}: ${count} roads`);
+            }
+
+            return true;
+        }
+
+        function log(message) {
+            const logOutput = document.getElementById('logOutput');
+            const timestamp = new Date().toLocaleTimeString();
+            logOutput.innerHTML += `[${timestamp}] ${message}<br>`;
+            logOutput.scrollTop = logOutput.scrollHeight;
+        }
+
+        function updateProgress(current, total) {
+            const percentage = (current / total) * 100;
+            document.getElementById('progressBar').style.width = `${percentage}%`;
+            document.getElementById('progressText').textContent =
+                `Processing ${current}/${total} roads (${Math.round(percentage)}%)`;
+        }
+
+        async function fetchRoadCoordinates(startCoords, endCoords) {
+            const url = `https://router.project-osrm.org/route/v1/driving/${startCoords[1]},${startCoords[0]};${endCoords[1]},${endCoords[0]}?geometries=geojson&overview=full`;
+
+            try {
+                const response = await fetch(url);
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+                const data = await response.json();
+                if (data.routes && data.routes[0] && data.routes[0].geometry) {
+                    return data.routes[0].geometry.coordinates.map(coord => [coord[1], coord[0]]);
+                }
+                return null;
+            } catch (error) {
+                log(`❌ Error: ${error.message}`);
+                return null;
+            }
+        }
+
+        async function generateCache() {
+            if (!configLoaded) {
+                alert('Configuration not loaded! Please refresh the page and ensure roads-config.js is available.');
+                return;
+            }
+
+            const generateBtn = document.getElementById('generateBtn');
+            const copyBtn = document.getElementById('copyBtn');
+            const downloadBtn = document.getElementById('downloadBtn');
+
+            generateBtn.disabled = true;
+            log('🚀 Starting cache generation from external configuration...');
+
+            const { ROAD_TRACKS } = window.RoadsConfig;
+            const result = JSON.parse(JSON.stringify(ROAD_TRACKS)); // Deep copy
+            let totalRoads = 0;
+            let currentRoad = 0;
+
+            // Count total roads
+            for (const roads of Object.values(ROAD_TRACKS)) {
+                totalRoads += roads.length;
+            }
+
+            log(`📊 Processing ${totalRoads} roads from configuration...`);
+
+            // Process each road type
+            for (const [roadType, roads] of Object.entries(ROAD_TRACKS)) {
+                if (roads.length === 0) continue;
+
+                log(`📂 Processing ${roadType} (${roads.length} roads)...`);
+
+                for (let i = 0; i < roads.length; i++) {
+                    const road = roads[i];
+                    currentRoad++;
+
+                    log(`🛣️ Fetching ${road.name}...`);
+                    updateProgress(currentRoad, totalRoads);
+
+                    const coordinates = await fetchRoadCoordinates(
+                        road.startPoint.coordinates,
+                        road.endPoint.coordinates
+                    );
+
+                    if (coordinates) {
+                        result[roadType][i].coordinates = coordinates;
+                        log(`✅ ${road.name} - ${coordinates.length} points cached`);
+                    } else {
+                        result[roadType][i].coordinates = [
+                            road.startPoint.coordinates,
+                            road.endPoint.coordinates
+                        ];
+                        log(`⚠️ ${road.name} - using fallback coordinates`);
+                    }
+
+                    // Rate limiting - wait 1 second between requests
+                    if (currentRoad < totalRoads) {
+                        await new Promise(resolve => setTimeout(resolve, 1000));
+                    }
+                }
+            }
+
+            generatedData = result;
+
+            // Generate complete file content
+            const fileContent = generateCompleteFile(result);
+
+            // Display results
+            const cacheOutput = document.getElementById('cacheOutput');
+            const cacheData = document.getElementById('cacheData');
+
+            cacheData.textContent = fileContent;
+
+            cacheOutput.style.display = 'block';
+            copyBtn.disabled = false;
+            downloadBtn.disabled = false;
+            generateBtn.disabled = false;
+
+            updateProgress(totalRoads, totalRoads);
+            log('🎉 Cache generation completed!');
+            log(`📊 Generated coordinates for ${totalRoads} roads`);
+        }
+
+        function generateCompleteFile(roadTracks) {
+            return `// roads-data-cached.js - Configuration file with pre-cached road coordinates
+// Generated on ${new Date().toISOString()}
+// Total roads cached: ${Object.values(roadTracks).reduce((sum, roads) => sum + roads.length, 0)}
+
+const ROAD_TRACKS = ${JSON.stringify(roadTracks, null, 2)};
+
+const ROAD_COLORS = {
+    highways: ['#2929b9ff'],
+    mainRoads: ['#2980b9'],
+    secondaryRoads: ['#3498db', '#2980b9', '#1abc9c']
+};
+
+const SPEED_LIMITS = {
+    HIGHWAY: 130,
+    MAIN_ROAD: 90,
+    SECONDARY_ROAD: 50,
+    CITY_ROAD: 50,
+    RESIDENTIAL: 30
+};
+
+const RoadDataUtils = {
+    getRoadsByType: function (type) {
+        return ROAD_TRACKS[type] || [];
+    },
+
+    getRoadById: function (id) {
+        for (const roadType of Object.values(ROAD_TRACKS)) {
+            const road = roadType.find(r => r.id === id);
+            if (road) return road;
+        }
+        return null;
+    },
+
+    getRoadColor: function (type, index = 0) {
+        const colors = ROAD_COLORS[type];
+        return colors ? colors[index % colors.length] : '#333333';
+    },
+
+    hasCoordinates: function(road) {
+        return road.coordinates && road.coordinates.length > 0;
+    },
+
+    getFallbackCoordinates: function(road) {
+        return [road.startPoint.coordinates, road.endPoint.coordinates];
+    }
+};
+
+// Export for use in main application
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = {
+        ROAD_TRACKS,
+        ROAD_COLORS,
+        SPEED_LIMITS,
+        RoadDataUtils
+    };
+}
+
+if (typeof window !== 'undefined') {
+    window.RoadData = {
+        ROAD_TRACKS,
+        ROAD_COLORS,
+        SPEED_LIMITS,
+        RoadDataUtils
+    };
+}`;
+        }
+
+        function copyToClipboard() {
+            const cacheData = document.getElementById('cacheData');
+            navigator.clipboard.writeText(cacheData.textContent).then(() => {
+                log('📋 Complete file content copied to clipboard!');
+                alert('Cache data copied to clipboard! You can now save it as roads-data-cached.js');
+            }).catch(err => {
+                log('❌ Failed to copy to clipboard');
+                console.error('Copy failed:', err);
+            });
+        }
+
+        function downloadFile() {
+            if (!generatedData) return;
+
+            const fileContent = generateCompleteFile(generatedData);
+            const blob = new Blob([fileContent], { type: 'application/javascript' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'roads-data-cached.js';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            log('💾 File downloaded as roads-data-cached.js');
+        }
+
+        // Initialize when page loads
+        window.addEventListener('load', function () {
+            log('🔄 Checking configuration...');
+            configLoaded = checkConfiguration();
+        });
+    </script>
+</body>
+
+</html>

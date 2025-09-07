@@ -1,0 +1,1 @@
+линк към картинки на отсечки от БГ-Тол - https://www.bgtoll.bg/vaprosi-i-otgovori/sredna-skorost/wim

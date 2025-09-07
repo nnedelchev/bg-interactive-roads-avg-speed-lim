@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bulgaria Road Network Map</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+    <div class="header">
+        <h1>🇧🇬 Bulgaria Road Network Map</h1>
+        <p>Toggle individual roads ON/OFF - Road lines and endpoint names appear/disappear together</p>
+    </div>
+
+    <div class="map-container">
+        <div id="map"></div>
+        <div id="loading" class="loading-message" style="display: none;">
+            🛣️ Loading exact road segments from configuration file...
+        </div>
+
+        <div class="controls">
+            <!-- <h3>Сертифицирани отсечки за средна скорост</h3> -->
+            <h3></h3>
+            <div id="road-controls">
+                <!-- Road toggles will be dynamically generated here -->
+            </div>
+        </div>
+
+        <div class="legend">
+            <h3>Легенда</h3>
+            <!-- <h2>Отсечки на магистрала: </h2>
+            <h2>Отсечки други: </h2>
+            <h2>Общо километри: </h2> -->
+            <div class="legend-item">
+                <div class="legend-color highway"></div>
+                <span>Highways (130 km/h)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color main-road"></div>
+                <span>Main Roads (90 km/h)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color secondary-road"></div>
+                <span>Secondary Roads (50 km/h)</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- External JavaScript files -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+    <script src="roads-data-cached.js"></script>
+    <script src="map-script.js"></script>
+</body>
+
+</html>
