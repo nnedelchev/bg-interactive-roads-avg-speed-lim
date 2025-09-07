@@ -11,8 +11,14 @@
 
 <body>
     <div class="header">
-        <h1>🇧🇬 Bulgaria Road Network Map</h1>
-        <p>Toggle individual roads ON/OFF - Road lines and endpoint names appear/disappear together</p>
+        <div class="header-content">
+            <div class="header-text">
+                <h1>🇧🇬 Отсечки със средна скорост</h1>
+                <p>На тези отсечки тол камерите пресмятат вашата средна скорост!</p>
+            </div>
+            <button id="about-btn" class="about-button">ℹ️ About</button>
+        </div>
+
     </div>
 
     <div class="map-container">
@@ -30,24 +36,27 @@
         </div>
 
         <div class="legend">
-            <h3>Легенда</h3>
-            <!-- <h2>Отсечки на магистрала: </h2>
-            <h2>Отсечки други: </h2>
-            <h2>Общо километри: </h2> -->
-            <div class="legend-item">
-                <div class="legend-color highway"></div>
-                <span>Highways (130 km/h)</span>
+            <div class="legend-stat">
+                <span class="legend-stat-label">Отсечки пътища:</span>
+                <span class="legend-stat-value" id="main-roads-count">-</span>
             </div>
-            <div class="legend-item">
-                <div class="legend-color main-road"></div>
-                <span>Main Roads (90 km/h)</span>
+            <div class="legend-stat">
+                <span class="legend-stat-label">Отсечки пътища км.:</span>
+                <span class="legend-stat-value" id="main-roads-distance">-</span>
             </div>
-            <div class="legend-item">
-                <div class="legend-color secondary-road"></div>
-                <span>Secondary Roads (50 km/h)</span>
+            <div class="legend-stat">
+                <span class="legend-stat-label">Отсечки от магистрала:</span>
+                <span class="legend-stat-value" id="highways-count">-</span>
+            </div>
+            <div class="legend-stat">
+                <span class="legend-stat-label">Отсечки от магистрала км.:</span>
+                <span class="legend-stat-value" id="highways-distance">-</span>
             </div>
         </div>
     </div>
+
+    <!-- About modal will be loaded here -->
+    <div id="about-modal-container"></div>
 
     <!-- External JavaScript files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>

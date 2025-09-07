@@ -16,12 +16,54 @@ const map = L.map('map', {
     maxBoundsViscosity: 1.0
 }).setView([42.42, 24.0], 8);
 
-// Add map tiles
-const tileLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-    attribution: '© OpenStreetMap contributors, © CARTO',
-    maxZoom: 18,
-    subdomains: 'abcd'
+// ===== BASEMAP CONFIGURATION =====
+// Change the 'current' property to switch basemaps easily
+const BASEMAP_CONFIG = {
+    current: 'openStreetMap', // Change this to switch basemaps
+
+    options: {
+        cartoLight: {
+            url: 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+            attribution: '© OpenStreetMap contributors, © CARTO',
+            maxZoom: 18,
+            subdomains: 'abcd'
+        },
+        cartoDark: {
+            url: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
+            attribution: '© OpenStreetMap contributors, © CARTO',
+            maxZoom: 18,
+            subdomains: 'abcd'
+        },
+        cartoPositron: {
+            url: 'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png',
+            attribution: '© OpenStreetMap contributors, © CARTO',
+            maxZoom: 18,
+            subdomains: 'abcd'
+        },
+        openStreetMap: {
+            url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+            attribution: '© OpenStreetMap contributors',
+            maxZoom: 19,
+            subdomains: ['a', 'b', 'c']
+        },
+        esriSatellite: {
+            url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+            attribution: '© Esri, Maxar, Earthstar Geographics',
+            maxZoom: 18
+        }
+    }
+};
+
+// Get current basemap configuration
+const currentBasemap = BASEMAP_CONFIG.options[BASEMAP_CONFIG.current];
+// ===== END BASEMAP CONFIGURATION =====
+
+const tileLayer = L.tileLayer(currentBasemap.url, {
+    attribution: currentBasemap.attribution,
+    maxZoom: currentBasemap.maxZoom,
+    subdomains: currentBasemap.subdomains || 'abcd'
 }).addTo(map);
+
 
 // Store layers and markers
 const roadLayers = new Map();
@@ -46,7 +88,7 @@ function createRoadControls(allRoads) {
 
         const label = document.createElement('label');
         label.setAttribute('for', `road-${road.id}`);
-        label.textContent = road.name;
+        label.textContent = `${road.name} (${road.distance} км)`;
 
         controlItem.appendChild(checkbox);
         controlItem.appendChild(label);
@@ -117,7 +159,14 @@ function createPointMarker(point, roadName, type) {
         })
     });
 
-    marker.bindPopup(`<strong>${point.name}</strong><br>Road: ${roadName}<br>Coordinates: ${point.coordinates[0].toFixed(4)}, ${point.coordinates[1].toFixed(4)}`);
+    const popupContent = `
+    <strong>${point.name}</strong><br>
+    ${point.description ? `<em>${point.description}</em><br>` : ''}
+    Coordinates: ${point.coordinates[0].toFixed(4)}, ${point.coordinates[1].toFixed(4)}
+`;
+
+    marker.bindPopup(popupContent);
+
     return marker;
 }
 
@@ -163,8 +212,6 @@ function showLoading(show) {
 
 // Main initialization function (NO API CALLS - uses cached data only)
 async function initializeBulgariaMap() {
-    console.log('🇧🇬 Bulgaria Road Network Map - Starting initialization with cached data...');
-
     // Check if cached data is loaded
     if (typeof window.RoadData === 'undefined') {
         console.error('❌ roads-data-cached.js file not loaded!');
@@ -172,15 +219,15 @@ async function initializeBulgariaMap() {
         return;
     }
 
-    console.log('📦 Loading road data from cached file (no API calls needed)...');
     const { ROAD_TRACKS, RoadDataUtils } = window.RoadData;
-    console.log('✅ Cached road data loaded successfully');
 
     // Show loading for UX (brief)
     showLoading(true);
 
     // Brief delay for smooth UX
     await new Promise(resolve => setTimeout(resolve, 300));
+
+    updateLegendStats();
 
     // Get road data (coordinates already included from cache)
     const highways = ROAD_TRACKS.highways || [];
@@ -231,13 +278,74 @@ async function initializeBulgariaMap() {
     const exactGeometry = allRoads.filter(road => road.coordinates && road.coordinates.length > 2).length;
     const approximateGeometry = allRoads.length - exactGeometry;
 
-    console.log(`🎉 Map initialization complete!`);
-    console.log(`📍 Loaded ${allRoads.length} roads: ${exactGeometry} with exact geometry, ${approximateGeometry} with approximate geometry`);
-    console.log(`🎛️ Created ${allRoads.length} individual road toggles.`);
-    console.log(`⚡ Zero API calls made - all data from cache!`);
+}
+
+// Function to update legend statistics
+function updateLegendStats() {
+    const { ROAD_TRACKS } = window.RoadData;
+
+    // Calculate highway statistics
+    const highwaysCount = ROAD_TRACKS.highways.length;
+    const highwaysDistance = ROAD_TRACKS.highways.reduce((sum, road) => sum + road.distance, 0);
+
+    // Calculate main roads statistics  
+    const mainRoadsCount = ROAD_TRACKS.mainRoads.length;
+    const mainRoadsDistance = ROAD_TRACKS.mainRoads.reduce((sum, road) => sum + road.distance, 0);
+
+    // Update DOM elements
+    document.getElementById('highways-count').textContent = highwaysCount;
+    document.getElementById('highways-distance').textContent = highwaysDistance.toFixed(2) + ' км';
+    document.getElementById('main-roads-count').textContent = mainRoadsCount;
+    document.getElementById('main-roads-distance').textContent = mainRoadsDistance.toFixed(2) + ' км';
+}
+
+// Function to load About modal HTML
+async function loadAboutModal() {
+    try {
+        const response = await fetch('about-modal.html');
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const html = await response.text();
+        document.getElementById('about-modal-container').innerHTML = html;
+
+        // Set up modal event listeners after loading
+        setupAboutModal();
+    } catch (error) {
+        console.error('Error loading about modal:', error);
+        // Fallback - create a simple alert
+        alert('About information could not be loaded. Please check that about-modal.html exists in the same directory.');
+    }
+}
+
+// Setup About modal event listeners
+function setupAboutModal() {
+    const aboutBtn = document.getElementById('about-btn');
+    const aboutModal = document.getElementById('about-modal');
+    const closeBtn = document.querySelector('.close');
+
+    if (aboutBtn && aboutModal && closeBtn) {
+        aboutBtn.addEventListener('click', function () {
+            aboutModal.style.display = 'block';
+        });
+
+        closeBtn.addEventListener('click', function () {
+            aboutModal.style.display = 'none';
+        });
+
+        window.addEventListener('click', function (event) {
+            if (event.target === aboutModal) {
+                aboutModal.style.display = 'none';
+            }
+        });
+    }
 }
 
 // Auto-start when page loads
 document.addEventListener('DOMContentLoaded', function () {
     initializeBulgariaMap();
+
+    // Load About modal HTML
+    loadAboutModal();
+
 });

@@ -8,6 +8,7 @@ const ROAD_TRACKS = {
       "name": "АМ Тракия (Вакарел - Ихтиман)",
       "startPoint": {
         "name": "Вакарел",
+        "description": "Камерите са на метална конструкция над пътя",
         "coordinates": [
           42.5504229,
           23.7028117
@@ -15,6 +16,7 @@ const ROAD_TRACKS = {
       },
       "endPoint": {
         "name": "Ихтиман",
+        "description": "Камерите са на метална конструкция над пътя",
         "coordinates": [
           42.42702,
           23.854146
@@ -662,6 +664,7 @@ const ROAD_TRACKS = {
       "name": "АМ Тракия (Цалапица - Радиново)",
       "startPoint": {
         "name": "Цалапица",
+        "description": "Камерите са на мост, към който няма отбивка",
         "coordinates": [
           42.2049742,
           24.5083902
@@ -669,6 +672,7 @@ const ROAD_TRACKS = {
       },
       "endPoint": {
         "name": "Радиново",
+        "description": "Камерите са на моста при бенз. Шел, Еко, р. Хепи и р. Макдоналдс",
         "coordinates": [
           42.1983262,
           24.640272
@@ -972,6 +976,7 @@ const ROAD_TRACKS = {
       "name": "АМ Хемус (Белокопитово - Каспичан)",
       "startPoint": {
         "name": "Белокопитово",
+        "description": "todo",
         "coordinates": [
           43.336986,
           26.900171
@@ -979,6 +984,7 @@ const ROAD_TRACKS = {
       },
       "endPoint": {
         "name": "Каспичан",
+        "description": "todo",
         "coordinates": [
           43.32319,
           27.149384
@@ -1370,6 +1376,7 @@ const ROAD_TRACKS = {
       "name": "АМ Хемус (Девня - Игнатиево)",
       "startPoint": {
         "name": "Девня",
+        "description": "todo",
         "coordinates": [
           43.22724,
           27.583637
@@ -1377,6 +1384,7 @@ const ROAD_TRACKS = {
       },
       "endPoint": {
         "name": "Игнатиево",
+        "description": "todo",
         "coordinates": [
           43.240717,
           27.781228
@@ -2200,6 +2208,7 @@ const ROAD_TRACKS = {
       "name": "АМ Струма (Българчево - Покровник)",
       "startPoint": {
         "name": "Българчево",
+        "description": "todo",
         "coordinates": [
           41.991964,
           23.054048
@@ -2207,6 +2216,7 @@ const ROAD_TRACKS = {
       },
       "endPoint": {
         "name": "Покровник",
+        "description": "todo",
         "coordinates": [
           42.011591,
           23.044888
@@ -2358,6 +2368,7 @@ const ROAD_TRACKS = {
       "name": "АМ Струма (Сандански - Дамяница)",
       "startPoint": {
         "name": "Сандански",
+        "description": "todo",
         "coordinates": [
           41.5730168,
           23.2396528
@@ -2365,6 +2376,7 @@ const ROAD_TRACKS = {
       },
       "endPoint": {
         "name": "Дамяница",
+        "description": "todo",
         "coordinates": [
           41.514538,
           23.2714067
@@ -2846,6 +2858,7 @@ const ROAD_TRACKS = {
       "name": "I-1 Слатино - Кочериновo",
       "startPoint": {
         "name": "Слатино",
+        "description": "todo",
         "coordinates": [
           42.1578707,
           23.0411316
@@ -2853,6 +2866,7 @@ const ROAD_TRACKS = {
       },
       "endPoint": {
         "name": "Кочериновo",
+        "description": "todo",
         "coordinates": [
           42.0640942,
           23.0385459
@@ -3320,6 +3334,7 @@ const ROAD_TRACKS = {
       "name": "I-2 Струйно - Шумен",
       "startPoint": {
         "name": "Струйно",
+        "description": "todo",
         "coordinates": [
           43.3621074,
           26.8511336
@@ -3327,6 +3342,7 @@ const ROAD_TRACKS = {
       },
       "endPoint": {
         "name": "Шумен",
+        "description": "todo",
         "coordinates": [
           43.3173846,
           26.9201329
@@ -3710,6 +3726,7 @@ const ROAD_TRACKS = {
       "name": "I-3 Долни Дъбник - Телиш",
       "startPoint": {
         "name": "Долни Дъбник",
+        "description": "todo",
         "coordinates": [
           43.4162825,
           24.4707422
@@ -3717,6 +3734,7 @@ const ROAD_TRACKS = {
       },
       "endPoint": {
         "name": "Телиш",
+        "description": "todo",
         "coordinates": [
           43.3261765,
           24.2721534
@@ -4788,6 +4806,7 @@ const ROAD_TRACKS = {
       "name": "I-4 Български извор - Сопот",
       "startPoint": {
         "name": "Български извор",
+        "description": "todo",
         "coordinates": [
           43.038396,
           24.273818
@@ -4795,6 +4814,7 @@ const ROAD_TRACKS = {
       },
       "endPoint": {
         "name": "Сопот",
+        "description": "todo",
         "coordinates": [
           43.0342221,
           24.3820344
@@ -5466,6 +5486,7 @@ const ROAD_TRACKS = {
       "name": "Северна скоростна тангента Чепинци - Илиянци",
       "startPoint": {
         "name": "Чепинци",
+        "description": "todo",
         "coordinates": [
           42.7653772,
           23.2968856
@@ -5473,6 +5494,7 @@ const ROAD_TRACKS = {
       },
       "endPoint": {
         "name": "Илиянци",
+        "description": "todo",
         "coordinates": [
           42.7195694,
           23.4005384
