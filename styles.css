@@ -458,6 +458,7 @@ body {
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
+    background: #f8f9fa;
 }
 
 .road-image img {
@@ -468,6 +469,7 @@ body {
     object-position: center;
     display: block;
     border: none;
+    border-radius: 8px;
 }
 
 /* Road information section */
@@ -637,9 +639,16 @@ body {
         font-size: 1rem;
     }
 
+    .road-image {
+        margin-bottom: 0.8rem;
+        background: #f8f9fa;
+    }
+
     .road-image img {
-        max-width: 240px;
+        width: 100% !important;
+        max-width: none !important;
         height: 135px;
+        border-radius: 6px;
     }
 
     .coordinates {
@@ -762,11 +771,14 @@ body {
 
     .road-image {
         margin-bottom: 0.6rem;
+        background: #f8f9fa;
     }
 
     .road-image img {
-        max-width: 200px;
+        width: 100% !important;
+        max-width: none !important;
         height: 120px;
+        border-radius: 6px;
     }
 
     .road-info-section {
@@ -898,11 +910,14 @@ body {
 
     .road-image {
         margin-bottom: 0.4rem;
+        background: #f8f9fa;
     }
 
     .road-image img {
-        max-width: 180px;
+        width: 100% !important;
+        max-width: none !important;
         height: 100px;
+        border-radius: 6px;
     }
 
     .road-info-section {
