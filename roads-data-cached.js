@@ -665,6 +665,7 @@ const ROAD_TRACKS = {
       "startPoint": {
         "name": "Цалапица",
         "description": "Камерите са на мост, към който няма отбивка",
+        "image": "calapica.jpg",
         "coordinates": [
           42.2049742,
           24.5083902
@@ -673,6 +674,7 @@ const ROAD_TRACKS = {
       "endPoint": {
         "name": "Радиново",
         "description": "Камерите са на моста при бенз. Шел, Еко, р. Хепи и р. Макдоналдс",
+        "image": "radinovo.jpg",
         "coordinates": [
           42.1983262,
           24.640272

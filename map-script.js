@@ -1,4 +1,5 @@
 // map-script.js - Final version using cached coordinates (NO API CALLS)
+// WITH COLLAPSIBLE CONTROLS AND LEGEND - DEFAULT COLLAPSED
 
 // Bulgaria geographical bounds
 const BULGARIA_BOUNDS = [
@@ -15,6 +16,28 @@ const map = L.map('map', {
     maxBounds: BULGARIA_BOUNDS,
     maxBoundsViscosity: 1.0
 }).setView([42.42, 24.0], 8);
+
+// Add this after map initialization
+map.on('popupopen', function(e) {
+    const popup = e.popup;
+    const popupElement = popup.getElement();
+    
+    // For mobile devices, ensure popup doesn't go off-screen
+    if (window.innerWidth <= 768) {
+        setTimeout(() => {
+            const rect = popupElement.getBoundingClientRect();
+            const mapRect = map.getContainer().getBoundingClientRect();
+            
+            // Check if popup goes beyond screen boundaries
+            if (rect.right > window.innerWidth - 20) {
+                popup.setLatLng([
+                    popup.getLatLng().lat,
+                    popup.getLatLng().lng - 0.01
+                ]);
+            }
+        }, 100);
+    }
+});
 
 // ===== BASEMAP CONFIGURATION =====
 // Change the 'current' property to switch basemaps easily
@@ -64,36 +87,36 @@ const tileLayer = L.tileLayer(currentBasemap.url, {
     subdomains: currentBasemap.subdomains || 'abcd'
 }).addTo(map);
 
-
 // Store layers and markers
 const roadLayers = new Map();
 const roadMarkers = new Map();
 
-// Create road controls
+// Create collapsible road controls
 function createRoadControls(allRoads) {
     const controlsContainer = document.getElementById('road-controls');
     controlsContainer.innerHTML = '';
 
-    const headerElement = document.querySelector('.controls h3');
-    headerElement.textContent = `Сертифицирани отсечки за средна скорост (${allRoads.length})`;
+    // Create the collapsible structure - starts collapsed
+    const controlsHTML = `
+        <div class="controls-header" onclick="toggleControls()">
+            <h3>Отсечки за средна скорост (${allRoads.length})</h3>
+            <button class="controls-toggle" id="controls-toggle">▲</button>
+        </div>
+        <div class="controls-content" id="controls-content">
+            ${allRoads.map(road => `
+                <div class="control-item">
+                    <input type="checkbox" id="road-${road.id}" checked>
+                    <label for="road-${road.id}">${road.name} (${road.distance} км)</label>
+                </div>
+            `).join('')}
+        </div>
+    `;
 
+    controlsContainer.innerHTML = controlsHTML;
+
+    // Add event listeners for each checkbox
     allRoads.forEach((road) => {
-        const controlItem = document.createElement('div');
-        controlItem.className = 'control-item';
-
-        const checkbox = document.createElement('input');
-        checkbox.type = 'checkbox';
-        checkbox.id = `road-${road.id}`;
-        checkbox.checked = true;
-
-        const label = document.createElement('label');
-        label.setAttribute('for', `road-${road.id}`);
-        label.textContent = `${road.name} (${road.distance} км)`;
-
-        controlItem.appendChild(checkbox);
-        controlItem.appendChild(label);
-        controlsContainer.appendChild(controlItem);
-
+        const checkbox = document.getElementById(`road-${road.id}`);
         checkbox.addEventListener('change', function () {
             const roadLayer = roadLayers.get(road.id);
             const roadMarkersList = roadMarkers.get(road.id);
@@ -119,6 +142,106 @@ function createRoadControls(allRoads) {
             }
         });
     });
+}
+
+// Create collapsible legend
+function createLegend() {
+    const legendContainer = document.querySelector('.legend');
+
+    // Create the collapsible structure - starts collapsed
+    const legendHTML = `
+        <div class="legend-header" onclick="toggleLegend()">
+            <h3>📊 Статистики</h3>
+            <button class="legend-toggle" id="legend-toggle">▲</button>
+        </div>
+        <div class="legend-content" id="legend-content">
+            <div class="legend-stats">
+                <div class="legend-stat">
+                    <span class="legend-stat-label">По пътища:</span>
+                    <span class="legend-stat-value" id="main-roads-count">-</span>
+                </div>
+                <div class="legend-stat">
+                    <span class="legend-stat-label">Пътища км.:</span>
+                    <span class="legend-stat-value" id="main-roads-distance">-</span>
+                </div>
+                <div class="legend-stat">
+                    <span class="legend-stat-label">По магистрала:</span>
+                    <span class="legend-stat-value" id="highways-count">-</span>
+                </div>
+                <div class="legend-stat">
+                    <span class="legend-stat-label">Магистрала км.:</span>
+                    <span class="legend-stat-value" id="highways-distance">-</span>
+                </div>
+            </div>
+        </div>
+    `;
+
+    legendContainer.innerHTML = legendHTML;
+}
+
+// Toggle controls visibility
+function toggleControls() {
+    const controlsElement = document.querySelector('.controls');
+    const toggleButton = document.getElementById('controls-toggle');
+
+    controlsElement.classList.toggle('expanded');
+
+    if (controlsElement.classList.contains('expanded')) {
+        // Expanded state: show ▼ and add expanded class to button
+        toggleButton.textContent = '▼';
+        toggleButton.classList.add('expanded');
+    } else {
+        // Collapsed state: show ▲ and remove expanded class from button
+        toggleButton.textContent = '▲';
+        toggleButton.classList.remove('expanded');
+    }
+}
+
+// Toggle legend visibility
+function toggleLegend() {
+    const legendElement = document.querySelector('.legend');
+    const toggleButton = document.getElementById('legend-toggle');
+
+    legendElement.classList.toggle('expanded');
+
+    if (legendElement.classList.contains('expanded')) {
+        // Expanded state: show ▼ and add expanded class to button
+        toggleButton.textContent = '▼';
+        toggleButton.classList.add('expanded');
+    } else {
+        // Collapsed state: show ▲ and remove expanded class from button
+        toggleButton.textContent = '▲';
+        toggleButton.classList.remove('expanded');
+    }
+}
+
+// Auto-collapse panels on mobile devices (they're already collapsed by default)
+function autoCollapseOnMobile() {
+    if (window.innerWidth <= 768) {
+        // Ensure panels stay collapsed on mobile
+        const controlsElement = document.querySelector('.controls');
+        const controlsToggleButton = document.getElementById('controls-toggle');
+
+        if (controlsElement && controlsElement.classList.contains('expanded')) {
+            controlsElement.classList.remove('expanded');
+            if (controlsToggleButton) {
+                controlsToggleButton.textContent = '▲';
+                controlsToggleButton.classList.remove('expanded');
+            }
+        }
+
+        // Ensure legend stays collapsed on mobile
+        const legendElement = document.querySelector('.legend');
+        const legendToggleButton = document.getElementById('legend-toggle');
+
+        if (legendElement && legendElement.classList.contains('expanded')) {
+            legendElement.classList.remove('expanded');
+            if (legendToggleButton) {
+                legendToggleButton.textContent = '▲';
+                legendToggleButton.classList.remove('expanded');
+            }
+        }
+    }
 }
 
 // Create individual road layer
@@ -159,18 +282,36 @@ function createPointMarker(point, roadName, type) {
         })
     });
 
+    const imageName = point.image;
+    const imagePath = `camera-images/${imageName}`;
+
     const popupContent = `
-    <strong>${point.name}</strong><br>
-    ${point.description ? `<em>${point.description}</em><br>` : ''}
-    Coordinates: ${point.coordinates[0].toFixed(4)}, ${point.coordinates[1].toFixed(4)}
-`;
+        <div class="point-popup">
+            <div class="popup-header">
+                <h3>${point.name}</h3>
+            </div>
+            
+            <div class="popup-body">
+                <div class="coordinates">
+                    <strong>${point.description ? `${point.description}` : ''}</strong>
+                </div>
+                
+                <div class="coordinates">
+                    <strong>Coordinates:</strong> ${point.coordinates[0].toFixed(4)}, ${point.coordinates[1].toFixed(4)}
+                </div>
+                <div class="road-image">
+                    <img src="${imagePath}" alt="${point.name}" />
+                </div>
+            </div>
+        </div>
+    `;
 
     marker.bindPopup(popupContent);
 
     return marker;
 }
 
-// Create road polylines
+// Updated createRoadPolyline function with consistent popup styling
 function createRoadPolyline(road, color, layer, coordinates) {
     const polyline = L.polyline(coordinates, {
         color: color,
@@ -180,17 +321,30 @@ function createRoadPolyline(road, color, layer, coordinates) {
 
     const coordinateInfo = coordinates.length > 2 ? 'Exact road geometry' : 'Straight line approximation';
 
-    polyline.bindPopup(`
-        <div class="speed-popup">
-            <h4>${road.name}</h4>
-            <p><strong>Route:</strong> ${road.startPoint.name} → ${road.endPoint.name}</p>
-            <p><strong>Speed Limit:</strong> <span class="speed-limit">${road.speedLimit} km/h</span></p>
-            <p><strong>Road Type:</strong> ${getRoadType(road.speedLimit)}</p>
-            ${road.segment ? `<p><strong>Segment:</strong> ${road.segment}/2</p>` : ''}
-            <p><strong>Distance:</strong> ${road.distance} kilometers</p>
-            <p><strong>Geometry:</strong> ${coordinateInfo} (${coordinates.length} points)</p>
+    // Create popup content with consistent styling to match point popups
+    const popupContent = `
+        <div class="point-popup">
+            <div class="popup-header">
+                <h3>${road.name}</h3>
+            </div>
+            
+            <div class="popup-body">
+                <div class="road-info-section">
+                    <p><strong>Route:</strong> ${road.startPoint.name} → ${road.endPoint.name}</p>
+                    <p><strong>Speed Limit:</strong> <span class="speed-limit">${road.speedLimit} km/h</span></p>
+                    <p><strong>Road Type:</strong> ${getRoadType(road.speedLimit)}</p>
+                    ${road.segment ? `<p><strong>Segment:</strong> ${road.segment}/2</p>` : ''}
+                    <p><strong>Distance:</strong> ${road.distance} kilometers</p>
+                </div>
+                
+                <div class="coordinates">
+                    <strong>Geometry:</strong> ${coordinateInfo} (${coordinates.length} points)
+                </div>
+            </div>
         </div>
-    `);
+    `;
+
+    polyline.bindPopup(popupContent);
 
     return polyline;
 }
@@ -227,6 +381,9 @@ async function initializeBulgariaMap() {
     // Brief delay for smooth UX
     await new Promise(resolve => setTimeout(resolve, 300));
 
+    // Create the collapsible legend first
+    createLegend();
+
     updateLegendStats();
 
     // Get road data (coordinates already included from cache)
@@ -241,6 +398,9 @@ async function initializeBulgariaMap() {
 
     // Create controls
     createRoadControls(allRoads);
+
+    // Auto-collapse both panels on mobile after a brief delay
+    setTimeout(autoCollapseOnMobile, 1000);
 
     // Create layers for each road
     allRoads.forEach((road) => {
@@ -277,7 +437,6 @@ async function initializeBulgariaMap() {
     // Count roads with exact vs approximate geometry
     const exactGeometry = allRoads.filter(road => road.coordinates && road.coordinates.length > 2).length;
     const approximateGeometry = allRoads.length - exactGeometry;
-
 }
 
 // Function to update legend statistics
@@ -304,7 +463,7 @@ async function loadAboutModal() {
     try {
         const response = await fetch('about-modal.html');
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            throw new Error(`HTTP error! status: ${response.status} `);
         }
         const html = await response.text();
         document.getElementById('about-modal-container').innerHTML = html;
@@ -341,11 +500,18 @@ function setupAboutModal() {
     }
 }
 
+// Handle window resize to auto-collapse/expand controls
+function handleResize() {
+    autoCollapseOnMobile();
+}
+
 // Auto-start when page loads
 document.addEventListener('DOMContentLoaded', function () {
     initializeBulgariaMap();
 
-    // Load About modal HTML
-    loadAboutModal();
+    // Add resize listener for responsive behavior
+    window.addEventListener('resize', handleResize);
 
+    // Load About modal HTML
+    // loadAboutModal();
 });
