@@ -85,6 +85,50 @@ const ROAD_TRACKS = {
             },
             speedLimit: 140,
             distance: 7.306
+        },
+
+        // ----
+        {
+            id: "am-marica-liubimec-momkovo",
+            name: "АМ Марица (Момково - Любимец)",
+            startPoint: {
+                name: "Момково",
+                coordinates: [41.8323716,26.1405215]
+            },
+            endPoint: {
+                name: "Любимец",
+                coordinates: [41.8626946,26.0875656]
+            },
+            speedLimit: 140,
+            distance: 5.9
+        },
+        {
+            id: "am-marica-momkovo-svilengrad",
+            name: "АМ Марица (Свиленград - Момково)",
+            startPoint: {
+                name: "Свиленград",
+                coordinates: [41.7788533,26.2175075]
+            },
+            endPoint: {
+                name: "Момково",
+                coordinates: [41.8323716,26.1405215]
+            },
+            speedLimit: 140,
+            distance: 8.9
+        },
+        {
+            id: "am-marica-harmanli-liubimec",
+            name: "АМ Марица (Любимец - Харманли)",
+            startPoint: {
+                name: "Любимец",
+                coordinates: [41.8626946,26.0875656]
+            },
+            endPoint: {
+                name: "Харманли",
+                coordinates: [41.9579552,25.8825804]
+            },
+            speedLimit: 140,
+            distance: 20.9
         }
     ],
 
