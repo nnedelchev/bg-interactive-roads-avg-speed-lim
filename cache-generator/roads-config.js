@@ -190,6 +190,62 @@ const ROAD_TRACKS = {
             distance: 9.198
         },
         {
+            id: "I-5-1",
+            name: "I-5 Полски Тръмбеш - Поликраище",
+            startPoint: {
+                name: "Полски Тръмбеш",
+                coordinates: [43.3719622,25.6443753]
+            },
+            endPoint: {
+                name: "Поликраище",
+                coordinates: [43.1890999,25.6218701]
+            },
+            speedLimit: 90,
+            distance: 21
+        },
+        {
+            id: "I-5-2",
+            name: "I-5 Обретеник - Тръстеник",
+            startPoint: {
+                name: "Обретеник",
+                coordinates: [43.571866,25.8221363]
+            },
+            endPoint: {
+                name: "Тръстеник",
+                coordinates: [43.6397457,25.8724194]
+            },
+            speedLimit: 80-90,
+            distance: 8.7
+        },
+        {
+            id: "I-5-3",
+            name: "I-5 Одяланик - Тръстеник",
+            startPoint: {
+                name: "Одяланик",
+                coordinates: [43.7564031,25.9065885]
+            },
+            endPoint: {
+                name: "Тръстеник",
+                coordinates: [43.6397457,25.8724194]
+            },
+            speedLimit: 90,
+            distance: 14.5
+        },
+        {
+            id: "I-6",
+            name: "I-6 Радомир - Беланица",
+            startPoint: {
+                name: "Радомир",
+                coordinates: [42.5550108,22.9651796]
+            },
+            endPoint: {
+                name: "Беланица",
+                coordinates: [42.4876183,22.9270694]
+            },
+            speedLimit: 40-90,
+            distance: 8.4
+        },
+        {
             id: "skorostna-tangentna",
             name: "Северна скоростна тангента Чепинци - Илиянци",
             startPoint: {
