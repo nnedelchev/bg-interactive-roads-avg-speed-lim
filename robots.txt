@@ -13,6 +13,7 @@ Allow: /
 User-agent: Bingbot
 Allow: /
 
-# Disallow crawling of specific directories if needed
-# User-agent: *
-# Disallow: /cache-generator/
+# Disallow crawling of specific files and directories
+User-agent: *
+Disallow: /cache-generator/
+Disallow: /about-modal.html
