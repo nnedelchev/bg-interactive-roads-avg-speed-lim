@@ -93,11 +93,11 @@ const ROAD_TRACKS = {
             name: "АМ Марица (Момково - Любимец)",
             startPoint: {
                 name: "Момково",
-                coordinates: [41.8323716,26.1405215]
+                coordinates: [41.8323716, 26.1405215]
             },
             endPoint: {
                 name: "Любимец",
-                coordinates: [41.8626946,26.0875656]
+                coordinates: [41.8626946, 26.0875656]
             },
             speedLimit: 140,
             distance: 5.9
@@ -107,11 +107,11 @@ const ROAD_TRACKS = {
             name: "АМ Марица (Свиленград - Момково)",
             startPoint: {
                 name: "Свиленград",
-                coordinates: [41.7788533,26.2175075]
+                coordinates: [41.7788533, 26.2175075]
             },
             endPoint: {
                 name: "Момково",
-                coordinates: [41.8323716,26.1405215]
+                coordinates: [41.8323716, 26.1405215]
             },
             speedLimit: 140,
             distance: 8.9
@@ -121,11 +121,11 @@ const ROAD_TRACKS = {
             name: "АМ Марица (Любимец - Харманли)",
             startPoint: {
                 name: "Любимец",
-                coordinates: [41.8626946,26.0875656]
+                coordinates: [41.8626946, 26.0875656]
             },
             endPoint: {
                 name: "Харманли",
-                coordinates: [41.9579552,25.8825804]
+                coordinates: [41.9579552, 25.8825804]
             },
             speedLimit: 140,
             distance: 20.9
@@ -146,6 +146,25 @@ const ROAD_TRACKS = {
             },
             speedLimit: 90,
             distance: 10.586
+        },
+        {
+            id: "I-1-2",
+            name: "I-1 Срацимирово - Жеглица",
+            startPoint: {
+                name: "Срацимирово",
+                description: "Камерите са на метална конструкция над пътя",
+                image: "sratsimirovo.jpg",
+                coordinates: [43.8202694, 22.757463]
+            },
+            endPoint: {
+                name: "Жеглица",
+                description: "Камерите са на метална конструкция над пътя",
+                image: "jeglica.jpg",
+                coordinates: [43.878498, 22.7892937]
+            },
+            speedLimit: 90,
+            distance: 7.5,
+            "active_since": "2025-10-24"
         },
         {
             id: "I-2",
@@ -176,7 +195,25 @@ const ROAD_TRACKS = {
             distance: 21.878
         },
         {
-            id: "I-4",
+            id: "I-3-2",
+            name: "I-3 Пейчиново - Горна Студена",
+            startPoint: {
+                name: "Пейчиново",
+                description: "Камерите са на метална конструкция над пътя",
+                image: "peychinovo.jpg",
+                coordinates: [43.4420639, 25.610221]
+            },
+            endPoint: {
+                name: "Горна Студена",
+                description: "Камерите са на метална конструкция над пътя",
+                image: "gorna-studena.jpg",
+                coordinates: [43.4163286, 25.3580126]
+            },
+            speedLimit: 90,
+            distance: 21.2
+        },
+        {
+            id: "I-4-1",
             name: "I-4 Български извор - Сопот",
             startPoint: {
                 name: "Български извор",
@@ -190,15 +227,72 @@ const ROAD_TRACKS = {
             distance: 9.198
         },
         {
+            id: "I-4-2",
+            name: "I-4 Сопот - Голец",
+            startPoint: {
+                name: "Сопот",
+                description: "Камерите са на метална конструкция над пътя",
+                image: "sopot.jpg",
+                coordinates: [43.0342221, 24.3820344]
+            },
+            endPoint: {
+                name: "Голец",
+                description: "Камерите са на метална конструкция над пътя",
+                image: "golec.jpg",
+                coordinates: [43.0429322, 24.597864]
+            },
+            speedLimit: 90,
+            distance: 17.9,
+            "active_since": "2025-10-24"
+        },
+        {
+            id: "I-4-3",
+            name: "I-4 Ряховците - Богатово",
+            startPoint: {
+                name: "Ряховците",
+                description: "Камерите са на метална конструкция над пътя преди/след бензиностанцията",
+                image: "riahovcite.jpg",
+                coordinates: [43.0331772, 25.0108456]
+            },
+            endPoint: {
+                name: "Богатово",
+                description: "Камерите са на метална конструкция над пътя",
+                image: "bogatovo.jpg",
+                coordinates: [43.0427039, 25.215283]
+            },
+            speedLimit: 90,
+            distance: 16.9,
+            "active_since": "2025-10-24"
+        },
+        {
+            id: "I-4-4",
+            name: "I-4 Богатово - Момин сбор",
+            startPoint: {
+                name: "Богатово",
+                description: "Камерите са на метална конструкция над пътя",
+                image: "bogatovo.jpg",
+                coordinates: [43.0427039, 25.215283]
+            },
+            endPoint: {
+                name: "Момин сбор",
+                description: "Камерите са на метална конструкция над пътя",
+                image: "momin-sbor.jpg",
+                coordinates: [43.0889017, 25.4860294]
+            },
+            speedLimit: 90,
+            distance: 23.7,
+            "active_since": "2025-10-24"
+        },
+        {
             id: "I-5-1",
             name: "I-5 Полски Тръмбеш - Поликраище",
             startPoint: {
                 name: "Полски Тръмбеш",
-                coordinates: [43.3719622,25.6443753]
+                coordinates: [43.3719622, 25.6443753]
             },
             endPoint: {
                 name: "Поликраище",
-                coordinates: [43.1890999,25.6218701]
+                coordinates: [43.1890999, 25.6218701]
             },
             speedLimit: 90,
             distance: 21
@@ -208,13 +302,13 @@ const ROAD_TRACKS = {
             name: "I-5 Обретеник - Тръстеник",
             startPoint: {
                 name: "Обретеник",
-                coordinates: [43.571866,25.8221363]
+                coordinates: [43.571866, 25.8221363]
             },
             endPoint: {
                 name: "Тръстеник",
-                coordinates: [43.6397457,25.8724194]
+                coordinates: [43.6397457, 25.8724194]
             },
-            speedLimit: 80-90,
+            speedLimit: 80 - 90,
             distance: 8.7
         },
         {
@@ -222,27 +316,46 @@ const ROAD_TRACKS = {
             name: "I-5 Одяланик - Тръстеник",
             startPoint: {
                 name: "Одяланик",
-                coordinates: [43.7564031,25.9065885]
+                coordinates: [43.7564031, 25.9065885]
             },
             endPoint: {
                 name: "Тръстеник",
-                coordinates: [43.6397457,25.8724194]
+                coordinates: [43.6397457, 25.8724194]
             },
             speedLimit: 90,
             distance: 14.5
+        },
+        {
+            id: "I-5-4",
+            name: "I-5 Поликраище - Самоводене",
+            startPoint: {
+                name: "Поликраище",
+                description: "Камерите са на метална конструкция над пътя",
+                image: "polikraishte.jpg",
+                coordinates: [43.1890999, 25.6218701]
+            },
+            endPoint: {
+                name: "Самоводене",
+                description: "Камерите са на метална конструкция над пътя",
+                image: "samovodene.jpg",
+                coordinates: [43.1341997, 25.6132668]
+            },
+            speedLimit: 90,
+            distance: 6.5, 
+            "active_since": "2025-10-24"
         },
         {
             id: "I-6",
             name: "I-6 Радомир - Беланица",
             startPoint: {
                 name: "Радомир",
-                coordinates: [42.5550108,22.9651796]
+                coordinates: [42.5550108, 22.9651796]
             },
             endPoint: {
                 name: "Беланица",
-                coordinates: [42.4876183,22.9270694]
+                coordinates: [42.4876183, 22.9270694]
             },
-            speedLimit: 40-90,
+            speedLimit: 40 - 90,
             distance: 8.4
         },
         {
