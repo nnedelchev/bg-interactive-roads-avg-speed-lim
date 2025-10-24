@@ -26,6 +26,7 @@ const ROAD_TRACKS = {
       },
       "speedLimit": 140,
       "distance": 19.16,
+      "active_since": "2025-9-6",
       "coordinates": [
         [
           42.55042,
@@ -684,6 +685,7 @@ const ROAD_TRACKS = {
       },
       "speedLimit": 140,
       "distance": 10.936,
+      "active_since": "2025-9-6",
       "coordinates": [
         [
           42.204981,
@@ -998,6 +1000,7 @@ const ROAD_TRACKS = {
       },
       "speedLimit": 140,
       "distance": 21.288,
+      "active_since": "2025-9-6",
       "coordinates": [
         [
           43.337014,
@@ -1400,6 +1403,7 @@ const ROAD_TRACKS = {
       },
       "speedLimit": 140,
       "distance": 18.423,
+      "active_since": "2025-9-6",
       "coordinates": [
         [
           43.227281,
@@ -2234,6 +2238,7 @@ const ROAD_TRACKS = {
       },
       "speedLimit": 140,
       "distance": 2.329,
+      "active_since": "2025-9-6",
       "coordinates": [
         [
           41.991966,
@@ -2396,6 +2401,7 @@ const ROAD_TRACKS = {
       },
       "speedLimit": 140,
       "distance": 7.306,
+      "active_since": "2025-9-6",
       "coordinates": [
         [
           41.573016,
@@ -2863,7 +2869,6 @@ const ROAD_TRACKS = {
         ]
       ]
     },
-
     {
       id: "am-marica-liubimec-momkovo",
       name: "АМ Марица (Момково - Любимец)",
@@ -2881,6 +2886,7 @@ const ROAD_TRACKS = {
       },
       speedLimit: 140,
       distance: 5.9,
+      "active_since": "2025-9-12",
       coordinates: [
         [
           41.832378,
@@ -3341,6 +3347,7 @@ const ROAD_TRACKS = {
       },
       speedLimit: 140,
       distance: 8.9,
+      "active_since": "2025-9-12",
       "coordinates": [
         [
           41.778821,
@@ -3901,6 +3908,7 @@ const ROAD_TRACKS = {
       },
       speedLimit: 140,
       distance: 20.9,
+      "active_since": "2025-9-12",
       "coordinates": [
         [
           41.862696,
@@ -5405,6 +5413,7 @@ const ROAD_TRACKS = {
       },
       "speedLimit": 90,
       "distance": 10.586,
+      "active_since": "2025-9-6",
       "coordinates": [
         [
           42.15787,
@@ -6550,6 +6559,7 @@ const ROAD_TRACKS = {
       },
       "speedLimit": 90,
       "distance": 7.648,
+      "active_since": "2025-9-6",
       "coordinates": [
         [
           43.362099,
@@ -6944,6 +6954,7 @@ const ROAD_TRACKS = {
       },
       "speedLimit": 90,
       "distance": 21.878,
+      "active_since": "2025-9-6",
       "coordinates": [
         [
           43.416245,
@@ -8497,6 +8508,7 @@ const ROAD_TRACKS = {
       },
       "speedLimit": 90,
       "distance": 9.198,
+      "active_since": "2025-9-6",
       "coordinates": [
         [
           43.038371,
@@ -11464,6 +11476,7 @@ const ROAD_TRACKS = {
       },
       "speedLimit": 90,
       "distance": 21,
+      "active_since": "2025-10-5",
       "coordinates": [
         [
           43.371963,
@@ -12234,6 +12247,7 @@ const ROAD_TRACKS = {
       },
       "speedLimit": 90,
       "distance": 8.7,
+      "active_since": "2025-10-5",
       "coordinates": [
         [
           43.57187,
@@ -12500,6 +12514,7 @@ const ROAD_TRACKS = {
       },
       "speedLimit": 90,
       "distance": 14.5,
+      "active_since": "2025-10-5",
       "coordinates": [
         [
           43.756403,
@@ -13501,6 +13516,7 @@ const ROAD_TRACKS = {
       },
       "speedLimit": 40,
       "distance": 8.4,
+      "active_since": "2025-10-5",
       "coordinates": [
         [
           42.555011,
@@ -13907,6 +13923,7 @@ const ROAD_TRACKS = {
       },
       "speedLimit": 90,
       "distance": 10.278,
+      "active_since": "2025-9-6",
       "coordinates": [
         [
           42.765388,
