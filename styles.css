@@ -367,6 +367,18 @@ body {
     color: #27ae60;
 }
 
+.legend-colors {
+    margin-top: 0.5rem;
+}
+
+.legend-color-item {
+    margin-bottom: 0.5rem;
+}
+
+.legend-color-item:last-child {
+    margin-bottom: 0;
+}
+
 .legend-color {
     width: 20px;
     height: 4px;

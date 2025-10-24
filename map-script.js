@@ -151,7 +151,7 @@ function createLegend() {
     // Create the collapsible structure - starts collapsed
     const legendHTML = `
         <div class="legend-header" onclick="toggleLegend()">
-            <h3>📊 Статистики</h3>
+            <h3>📊 Статистики & Легенда</h3>
             <button class="legend-toggle" id="legend-toggle">▲</button>
         </div>
         <div class="legend-content" id="legend-content">
@@ -171,6 +171,27 @@ function createLegend() {
                 <div class="legend-stat">
                     <span class="legend-stat-label">Магистрала км.:</span>
                     <span class="legend-stat-value" id="highways-distance">-</span>
+                </div>
+            </div>
+            <hr style="margin: 0.8rem 0; border: none; border-top: 1px solid #e0e0e0;">
+            <div class="legend-colors">
+                <div class="legend-color-item">
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <div style="width: 30px; height: 4px; background: #FF0000; border-radius: 2px;"></div>
+                        <span style="font-size: 0.85rem; color: #2c3e50;">Нови отсечки</span>
+                    </div>
+                </div>
+                <div class="legend-color-item">
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <div style="width: 30px; height: 4px; background: #2c3e50; border-radius: 2px;"></div>
+                        <span style="font-size: 0.85rem; color: #2c3e50;">Магистрали</span>
+                    </div>
+                </div>
+                <div class="legend-color-item">
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <div style="width: 30px; height: 4px; background: #13d90cff; border-radius: 2px;"></div>
+                        <span style="font-size: 0.85rem; color: #2c3e50;">Пътища</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -245,7 +266,7 @@ function autoCollapseOnMobile() {
 }
 
 // Create individual road layer
-function createIndividualRoadLayer(road, color) {
+function createIndividualRoadLayer(road, color, isNewest = false) {
     const roadLayer = L.layerGroup().addTo(map);
 
     // Use the coordinates from cached data (already included in road object)
@@ -254,8 +275,8 @@ function createIndividualRoadLayer(road, color) {
     const polyline = createRoadPolyline(road, color, roadLayer, coordinates);
 
     const markers = [];
-    const startMarker = createPointMarker(road.startPoint, road.name, road.speedLimit >= 130 ? 'highway' : 'mainRoad');
-    const endMarker = createPointMarker(road.endPoint, road.name, road.speedLimit >= 130 ? 'highway' : 'mainRoad');
+    const startMarker = createPointMarker(road.startPoint, road.name, road.speedLimit >= 130 ? 'highway' : 'mainRoad', isNewest);
+    const endMarker = createPointMarker(road.endPoint, road.name, road.speedLimit >= 130 ? 'highway' : 'mainRoad', isNewest);
 
     startMarker.addTo(map);
     endMarker.addTo(map);
@@ -269,9 +290,16 @@ function createIndividualRoadLayer(road, color) {
 }
 
 // Create point markers
-function createPointMarker(point, roadName, type) {
+function createPointMarker(point, roadName, type, isNewest = false) {
     const isHighway = type === 'highway';
-    const backgroundColor = isHighway ? '#2c3e50' : '#13d90cff';
+    let backgroundColor;
+
+    // Use red color for newest roads, otherwise use default colors
+    if (isNewest) {
+        backgroundColor = '#FF0000'; // Red for newest roads
+    } else {
+        backgroundColor = isHighway ? '#2c3e50' : '#13d90cff';
+    }
 
     const marker = L.marker(point.coordinates, {
         icon: L.divIcon({
@@ -364,6 +392,21 @@ function showLoading(show) {
     }
 }
 
+// Find the most recent active_since date across all roads
+function findNewestActiveDate(roads) {
+    let newestDate = null;
+
+    roads.forEach(road => {
+        if (road.active_since) {
+            if (!newestDate || road.active_since > newestDate) {
+                newestDate = road.active_since;
+            }
+        }
+    });
+
+    return newestDate;
+}
+
 // Main initialization function (NO API CALLS - uses cached data only)
 async function initializeBulgariaMap() {
     // Check if cached data is loaded
@@ -396,6 +439,10 @@ async function initializeBulgariaMap() {
     // Combine all roads
     const allRoads = [...highways, ...mainRoads, ...secondaryRoads];
 
+    // Find the most recent active_since date
+    const newestDate = findNewestActiveDate(allRoads);
+    console.log('Most recent active_since date:', newestDate);
+
     // Create controls
     createRoadControls(allRoads);
 
@@ -405,18 +452,27 @@ async function initializeBulgariaMap() {
     // Create layers for each road
     allRoads.forEach((road) => {
         let color;
-        if (highways.includes(road)) {
-            const highwayIndex = highways.indexOf(road);
-            color = RoadDataUtils.getRoadColor('highways', highwayIndex);
-        } else if (mainRoads.includes(road)) {
-            const mainRoadIndex = mainRoads.indexOf(road);
-            color = RoadDataUtils.getRoadColor('mainRoads', mainRoadIndex);
+        let isNewest = false;
+
+        // Check if this road has the newest active_since date
+        if (road.active_since && road.active_since === newestDate) {
+            color = '#FF0000'; // Red color for newest roads
+            isNewest = true;
         } else {
-            const secondaryRoadIndex = secondaryRoads.indexOf(road);
-            color = RoadDataUtils.getRoadColor('secondaryRoads', secondaryRoadIndex);
+            // Use default color logic
+            if (highways.includes(road)) {
+                const highwayIndex = highways.indexOf(road);
+                color = RoadDataUtils.getRoadColor('highways', highwayIndex);
+            } else if (mainRoads.includes(road)) {
+                const mainRoadIndex = mainRoads.indexOf(road);
+                color = RoadDataUtils.getRoadColor('mainRoads', mainRoadIndex);
+            } else {
+                const secondaryRoadIndex = secondaryRoads.indexOf(road);
+                color = RoadDataUtils.getRoadColor('secondaryRoads', secondaryRoadIndex);
+            }
         }
 
-        createIndividualRoadLayer(road, color);
+        createIndividualRoadLayer(road, color, isNewest);
     });
 
     // Fit map to show all roads
