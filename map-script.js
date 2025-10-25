@@ -566,12 +566,45 @@ function handleResize() {
     autoCollapseOnMobile();
 }
 
+// Close panels when clicking outside
+function handleClickOutside(event) {
+    const controlsElement = document.querySelector('.controls');
+    const legendElement = document.querySelector('.legend');
+    const controlsToggleButton = document.getElementById('controls-toggle');
+    const legendToggleButton = document.getElementById('legend-toggle');
+
+    // Check if click is outside controls panel
+    if (controlsElement && !controlsElement.contains(event.target)) {
+        if (controlsElement.classList.contains('expanded')) {
+            controlsElement.classList.remove('expanded');
+            if (controlsToggleButton) {
+                controlsToggleButton.textContent = '▲';
+                controlsToggleButton.classList.remove('expanded');
+            }
+        }
+    }
+
+    // Check if click is outside legend panel
+    if (legendElement && !legendElement.contains(event.target)) {
+        if (legendElement.classList.contains('expanded')) {
+            legendElement.classList.remove('expanded');
+            if (legendToggleButton) {
+                legendToggleButton.textContent = '▲';
+                legendToggleButton.classList.remove('expanded');
+            }
+        }
+    }
+}
+
 // Auto-start when page loads
 document.addEventListener('DOMContentLoaded', function () {
     initializeBulgariaMap();
 
     // Add resize listener for responsive behavior
     window.addEventListener('resize', handleResize);
+
+    // Add click listener to close panels when clicking outside
+    document.addEventListener('click', handleClickOutside);
 
     // Load About modal HTML
     loadAboutModal();

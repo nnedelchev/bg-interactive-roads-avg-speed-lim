@@ -194,7 +194,7 @@ body {
     background: white;
     border-radius: 8px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
+    z-index: 1001;
     min-width: 200px;
     max-height: 70vh;
     overflow: hidden;
@@ -284,14 +284,15 @@ body {
 /* ===== COLLAPSIBLE LEGEND PANEL ===== */
 .legend {
     position: absolute;
-    bottom: 20px;
-    left: 20px;
+    top: 90px;
+    right: 20px;
     background: white;
     border-radius: 8px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
+    z-index: 999;
     overflow: hidden;
     transition: all 0.3s ease;
+    min-width: 200px;
 }
 
 .legend-header {
