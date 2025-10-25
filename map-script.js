@@ -395,11 +395,16 @@ function showLoading(show) {
 // Find the most recent active_since date across all roads
 function findNewestActiveDate(roads) {
     let newestDate = null;
+    let newestDateObj = null;
 
     roads.forEach(road => {
         if (road.active_since) {
-            if (!newestDate || road.active_since > newestDate) {
-                newestDate = road.active_since;
+            // Convert to Date object for proper comparison
+            const currentDateObj = new Date(road.active_since);
+
+            if (!newestDateObj || currentDateObj > newestDateObj) {
+                newestDateObj = currentDateObj;
+                newestDate = road.active_since; // Keep the original string format
             }
         }
     });
