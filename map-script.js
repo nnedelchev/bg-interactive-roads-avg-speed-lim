@@ -7,15 +7,22 @@ const BULGARIA_BOUNDS = [
     [44.2, 28.6]   // Northeast corner
 ];
 
+// Detect if device is mobile
+const isMobile = window.innerWidth <= 768;
+
+// Set zoom level based on device type
+const initialZoom = isMobile ? 10 : 8;
+const minZoomLevel = isMobile ? 8 : 7;
+
 // Initialize the map
 const map = L.map('map', {
     center: [42.7, 25.5],
     zoom: 7,
-    minZoom: 7,
+    minZoom: minZoomLevel,
     maxZoom: 15,
     maxBounds: BULGARIA_BOUNDS,
     maxBoundsViscosity: 1.0
-}).setView([42.42, 24.0], 8);
+}).setView([42.42, 24.0], initialZoom);
 
 // Add this after map initialization
 map.on('popupopen', function(e) {
