@@ -611,13 +611,18 @@ body {
     }
 
     .header-buttons {
-        flex-direction: column;
+        flex-direction: row;
         gap: 0.5rem;
         width: 100%;
+        flex-wrap: wrap;
+        justify-content: center;
     }
 
     .about-button {
-        width: 100%;
+        flex: 1;
+        min-width: 150px;
+        font-size: 0.85rem;
+        padding: 0.5rem 0.8rem;
     }
 
     /* Modal adjustments */

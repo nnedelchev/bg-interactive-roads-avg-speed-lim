@@ -10,19 +10,20 @@ const BULGARIA_BOUNDS = [
 // Detect if device is mobile
 const isMobile = window.innerWidth <= 768;
 
-// Set zoom level based on device type
-const initialZoom = isMobile ? 10 : 8;
-const minZoomLevel = isMobile ? 8 : 7;
+// Set zoom level and center based on device type
+const initialZoom = 8;  // Same zoom for both mobile and desktop
+const minZoomLevel = 7;  // Same minimum zoom for both mobile and desktop
+const centerPoint = [42.7, 25.5];  // Central Bulgaria for both mobile and desktop
 
 // Initialize the map
 const map = L.map('map', {
-    center: [42.7, 25.5],
-    zoom: 7,
+    center: centerPoint,
+    zoom: initialZoom,
     minZoom: minZoomLevel,
     maxZoom: 15,
     maxBounds: BULGARIA_BOUNDS,
     maxBoundsViscosity: 1.0
-}).setView([42.42, 24.0], initialZoom);
+}).setView(centerPoint, initialZoom);
 
 // Add this after map initialization
 map.on('popupopen', function(e) {
@@ -497,7 +498,8 @@ async function initializeBulgariaMap() {
         }
     });
 
-    if (allPoints.length > 0) {
+    // Only fit bounds on desktop, keep mobile zoomed in
+    if (allPoints.length > 0 && !isMobile) {
         const bounds = L.latLngBounds(allPoints);
         map.fitBounds(bounds, { padding: [50, 50] });
     }
