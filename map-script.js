@@ -538,6 +538,24 @@ async function loadAboutModal() {
     }
 }
 
+// Function to load Statistics modal HTML
+async function loadStatisticsModal() {
+    try {
+        const response = await fetch('statistics-modal.html');
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const html = await response.text();
+        document.getElementById('statistics-modal-container').innerHTML = html;
+
+        // Set up modal event listeners after loading
+        setupStatisticsModal();
+    } catch (error) {
+        console.error('Error loading statistics modal:', error);
+        alert('Statistics information could not be loaded. Please check that statistics-modal.html exists in the same directory.');
+    }
+}
+
 // Setup About modal event listeners
 function setupAboutModal() {
     const aboutBtn = document.getElementById('about-btn');
@@ -556,6 +574,188 @@ function setupAboutModal() {
         window.addEventListener('click', function (event) {
             if (event.target === aboutModal) {
                 aboutModal.style.display = 'none';
+            }
+        });
+    }
+}
+
+// Setup Statistics modal event listeners
+function setupStatisticsModal() {
+    const statisticsBtn = document.getElementById('statistics-btn');
+    const statisticsModal = document.getElementById('statistics-modal');
+    const closeBtn = document.querySelector('.stats-close');
+
+    if (statisticsBtn && statisticsModal && closeBtn) {
+        statisticsBtn.addEventListener('click', function () {
+            statisticsModal.style.display = 'block';
+            // Generate statistics when modal opens
+            generateStatistics();
+        });
+
+        closeBtn.addEventListener('click', function () {
+            statisticsModal.style.display = 'none';
+        });
+
+        window.addEventListener('click', function (event) {
+            if (event.target === statisticsModal) {
+                statisticsModal.style.display = 'none';
+            }
+        });
+    }
+}
+
+// Process road data and calculate statistics by date
+function processRoadStatistics() {
+    const { ROAD_TRACKS } = window.RoadData;
+    const allRoads = [...ROAD_TRACKS.highways, ...ROAD_TRACKS.mainRoads, ...(ROAD_TRACKS.secondaryRoads || [])];
+
+    // Group roads by active_since date
+    const roadsByDate = {};
+
+    allRoads.forEach(road => {
+        const date = road.active_since || 'Unknown';
+        if (!roadsByDate[date]) {
+            roadsByDate[date] = {
+                count: 0,
+                distance: 0,
+                roads: []
+            };
+        }
+        roadsByDate[date].count++;
+        roadsByDate[date].distance += road.distance;
+        roadsByDate[date].roads.push(road);
+    });
+
+    // Sort dates chronologically
+    const sortedDates = Object.keys(roadsByDate).sort((a, b) => {
+        if (a === 'Unknown') return 1;
+        if (b === 'Unknown') return -1;
+        return new Date(a) - new Date(b);
+    });
+
+    // Calculate cumulative values
+    let cumulativeCount = 0;
+    let cumulativeDistance = 0;
+    const statistics = [];
+
+    sortedDates.forEach(date => {
+        cumulativeCount += roadsByDate[date].count;
+        cumulativeDistance += roadsByDate[date].distance;
+
+        statistics.push({
+            date: date,
+            newCount: roadsByDate[date].count,
+            newDistance: roadsByDate[date].distance,
+            cumulativeCount: cumulativeCount,
+            cumulativeDistance: cumulativeDistance
+        });
+    });
+
+    return statistics;
+}
+
+// Generate statistics chart and table
+let growthChart = null; // Store chart instance to avoid duplicates
+
+function generateStatistics() {
+    const statistics = processRoadStatistics();
+
+    // Generate table
+    const tableBody = document.getElementById('statistics-table-body');
+    if (tableBody) {
+        tableBody.innerHTML = '';
+
+        statistics.forEach(stat => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${stat.date}</td>
+                <td>${stat.newCount}</td>
+                <td>${stat.newDistance.toFixed(2)} км</td>
+                <td>${stat.cumulativeCount}</td>
+                <td>${stat.cumulativeDistance.toFixed(2)} км</td>
+            `;
+            tableBody.appendChild(row);
+        });
+    }
+
+    // Generate chart
+    const ctx = document.getElementById('growth-chart');
+    if (ctx) {
+        // Destroy existing chart if it exists
+        if (growthChart) {
+            growthChart.destroy();
+        }
+
+        const chartData = {
+            labels: statistics.map(s => s.date),
+            datasets: [
+                {
+                    label: 'Кумулативни километри',
+                    data: statistics.map(s => s.cumulativeDistance),
+                    borderColor: '#3498db',
+                    backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                    fill: true,
+                    tension: 0.4,
+                    yAxisID: 'y'
+                },
+                {
+                    label: 'Кумулативни отсечки',
+                    data: statistics.map(s => s.cumulativeCount),
+                    borderColor: '#e74c3c',
+                    backgroundColor: 'rgba(231, 76, 60, 0.1)',
+                    fill: true,
+                    tension: 0.4,
+                    yAxisID: 'y1'
+                }
+            ]
+        };
+
+        growthChart = new Chart(ctx, {
+            type: 'line',
+            data: chartData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Растеж на мрежата за средна скорост във времето',
+                        font: {
+                            size: 16
+                        }
+                    },
+                    legend: {
+                        display: true,
+                        position: 'top'
+                    }
+                },
+                scales: {
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                        title: {
+                            display: true,
+                            text: 'Километри (км)'
+                        }
+                    },
+                    y1: {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                        title: {
+                            display: true,
+                            text: 'Брой отсечки'
+                        },
+                        grid: {
+                            drawOnChartArea: false
+                        }
+                    }
+                }
             }
         });
     }
@@ -608,4 +808,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Load About modal HTML
     loadAboutModal();
+
+    // Load Statistics modal HTML
+    loadStatisticsModal();
 });

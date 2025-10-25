@@ -70,7 +70,10 @@
             <div class="header-text">
                 <h1>Отсечки със средна скорост - интерактивна карта (към 24.10.25)!</h1>
             </div>
-            <button id="about-btn" class="about-button">ℹ️ Информация за страницата</button>
+            <div class="header-buttons">
+                <button id="statistics-btn" class="about-button">📊 Статистика</button>
+                <button id="about-btn" class="about-button">ℹ️ Информация за страницата</button>
+            </div>
         </div>
 
     </div>
@@ -93,8 +96,12 @@
     <!-- About modal will be loaded here -->
     <div id="about-modal-container"></div>
 
+    <!-- Statistics modal will be loaded here -->
+    <div id="statistics-modal-container"></div>
+
     <!-- External JavaScript files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <script src="roads-data-cached.js"></script>
     <script src="map-script.js"></script>
 </body>

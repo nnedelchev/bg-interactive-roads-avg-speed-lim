@@ -1,0 +1,35 @@
+<!-- Statistics Modal -->
+<div id="statistics-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>📊 Статистика за растежа на мрежата</h2>
+            <span class="close stats-close">&times;</span>
+        </div>
+        <div class="modal-body">
+            <h3>📈 Кумулативен растеж на отсечките</h3>
+            <p>Този график показва нарастването на общото покритие на отсечки за средна скорост във времето.</p>
+
+            <div class="chart-container">
+                <canvas id="growth-chart"></canvas>
+            </div>
+
+            <h3>📅 Подробна таблица по дати</h3>
+            <div class="statistics-table-container">
+                <table id="statistics-table" class="statistics-table">
+                    <thead>
+                        <tr>
+                            <th>Дата</th>
+                            <th>Нови отсечки</th>
+                            <th>Добавени км</th>
+                            <th>Общо отсечки</th>
+                            <th>Общо км</th>
+                        </tr>
+                    </thead>
+                    <tbody id="statistics-table-body">
+                        <!-- Table rows will be dynamically generated -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
