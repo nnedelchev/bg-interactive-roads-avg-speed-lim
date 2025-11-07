@@ -79,6 +79,25 @@ const ROAD_TRACKS = {
             "active_since": "2025-9-6"
         },
         {
+            id: "am-struma-sofia-malobuchino",
+            name: "АМ Струма (София - тунел Мало Бучино)",
+            startPoint: {
+                "name": "София",
+                "description": "Камерите са на метална конструкция над пътя",
+                "image": "am-struma-nachalo-sofia.jpg",
+                "coordinates": [42.7107206,23.2229235]
+            },
+            endPoint: {
+                "name": "тунел Мало Бучино",
+                "description": "Камерите са на метална конструкция над пътя след/преди тунела",
+                "image": "tunel-malobuchino.jpg",
+                "coordinates": [42.6778655,23.1521632]
+            },
+            speedLimit: 140,
+            distance: 7.5,
+            "active_since": "2025-11-2"
+        },
+        {
             id: "am-struma-bulgarchevo-pokrovnik",
             name: "АМ Струма (Българчево - Покровник)",
             startPoint: {
@@ -116,8 +135,6 @@ const ROAD_TRACKS = {
             distance: 7.306,
             "active_since": "2025-9-6"
         },
-
-        // ----
         {
             id: "am-marica-liubimec-momkovo",
             name: "АМ Марица (Момково - Любимец)",
@@ -404,6 +421,25 @@ const ROAD_TRACKS = {
             "active_since": "2025-10-24"
         },
         {
+            id: "I-4-5",
+            name: "I-4 Омуртаг - Пролаз",
+            startPoint: {
+                "name": "Омуртаг",
+                "description": "Камерите са на метална конструкция над пътя",
+                "image": "omurtag.jpg",
+                "coordinates": [ 43.11822,26.4149195 ]
+            },
+            endPoint: {
+                "name": "Пролаз",
+                "description": "Камерите са на метална конструкция над пътя близо до заведение на пътя",
+                "image": "prolaz.jpg",
+                "coordinates": [ 43.196735,26.5025829 ]
+            },
+            speedLimit: 90,
+            distance: 13.4,
+            "active_since": "2025-11-2"
+        },
+        {
             id: "I-5-1",
             name: "I-5 Полски Тръмбеш - Поликраище",
             startPoint: {
@@ -504,6 +540,25 @@ const ROAD_TRACKS = {
             "active_since": "2025-10-24"
         },
         {
+            id: "I-5-5",
+            name: "I-5 Казанлък - Ягода",
+            startPoint: {
+                "name": "Казанлък",
+                "description": "Камерите са на метална конструкция над пътя до бензиностанции Лукоил",
+                "image": "kazanluk.jpg",
+                "coordinates": [ 42.6135757,25.4354488 ]
+            },
+            endPoint: {
+                "name": "Ягода",
+                "description": "Камерите са на метална конструкция над пътя",
+                "image": "qgoda.jpg",
+                "coordinates": [ 42.5475989,25.5593451 ]
+            },
+            speedLimit: 90,
+            distance: 13.2,
+            "active_since": "2025-11-2"
+        },
+        {
             id: "I-6",
             name: "I-6 Радомир - Беланица",
             startPoint: {
@@ -527,6 +582,25 @@ const ROAD_TRACKS = {
             speedLimit: 40 - 90,
             distance: 8.4,
             "active_since": "2025-10-5"
+        },
+        {
+            id: "II-55",
+            name: "I-55 Килифарево - Въглевци",
+            startPoint: {
+                "name": "Килифарево",
+                "description": "Камерите са на метална конструкция над пътя",
+                "image": "kilifarevo.jpg",
+                "coordinates": [ 42.9996142,25.614714 ]
+            },
+            endPoint: {
+                "name": "Въглевци",
+                "description": "Камерите са на метална конструкция над пътя",
+                "image": "vuglevci.jpg",
+                "coordinates": [ 42.90692,25.6494827 ]
+            },
+            speedLimit: 90,
+            distance: 13.2,
+            "active_since": "2025-11-2"
         },
         {
             id: "skorostna-tangentna",
