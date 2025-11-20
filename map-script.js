@@ -312,9 +312,9 @@ function createPointMarker(point, roadName, type, isNewest = false) {
     const marker = L.marker(point.coordinates, {
         icon: L.divIcon({
             className: 'point-marker',
-            html: `<div style="background: ${backgroundColor}; color: white; padding: 2px 6px; border-radius: 4px; font-size: 12px; font-weight: bold;">${point.name}</div>`,
-            iconSize: [point.name.length * 8, 20],
-            iconAnchor: [point.name.length * 4, 10]
+            html: `<div style="background: ${backgroundColor}; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; white-space: nowrap;">${point.name}</div>`,
+            iconSize: null,
+            iconAnchor: [0, 0]
         })
     });
 
