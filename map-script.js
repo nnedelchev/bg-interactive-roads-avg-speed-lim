@@ -613,6 +613,47 @@ function setupStatisticsModal() {
     }
 }
 
+// Function to load Fines modal HTML
+async function loadFinesModal() {
+    try {
+        const response = await fetch('fines-modal.html');
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const html = await response.text();
+        document.getElementById('fines-modal-container').innerHTML = html;
+
+        // Set up modal event listeners after loading
+        setupFinesModal();
+    } catch (error) {
+        console.error('Error loading fines modal:', error);
+        alert('Fines information could not be loaded. Please check that fines-modal.html exists in the same directory.');
+    }
+}
+
+// Setup Fines modal event listeners
+function setupFinesModal() {
+    const finesBtn = document.getElementById('fines-btn');
+    const finesModal = document.getElementById('fines-modal');
+    const closeBtn = finesModal.querySelector('.close');
+
+    if (finesBtn && finesModal && closeBtn) {
+        finesBtn.addEventListener('click', function () {
+            finesModal.style.display = 'block';
+        });
+
+        closeBtn.addEventListener('click', function () {
+            finesModal.style.display = 'none';
+        });
+
+        window.addEventListener('click', function (event) {
+            if (event.target === finesModal) {
+                finesModal.style.display = 'none';
+            }
+        });
+    }
+}
+
 // Process road data and calculate statistics by date
 function processRoadStatistics() {
     const { ROAD_TRACKS } = window.RoadData;
@@ -820,4 +861,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Load Statistics modal HTML
     loadStatisticsModal();
+
+    // Load Fines modal HTML
+    loadFinesModal();
 });
