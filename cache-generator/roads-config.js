@@ -22,6 +22,25 @@ const ROAD_TRACKS = {
             "active_since": "2025-9-6"
         },
         {
+            id: "am-trakia-shturkovo-calapica",
+            name: "АМ Тракия (Щърково - Цалапица)",
+            startPoint: {
+                name: "Щърково",
+                "description": "Камерите са на мост, към който няма отбивка",
+                "image": "shtarkovo.jpg",
+                coordinates: [42.2950521, 24.2321083]
+            },
+            endPoint: {
+                name: "Цалапица",
+                "description": "Камерите са на мост, към който няма отбивка",
+                "image": "calapica.jpg",
+                coordinates: [42.2049742, 24.5083902]
+            },
+            speedLimit: 140,
+            distance: 25.4,
+            "active_since": "2025-11-7"
+        },
+        {
             id: "am-trakia-calapica-radinovo",
             name: "АМ Тракия (Цалапица - Радиново)",
             startPoint: {
@@ -39,6 +58,82 @@ const ROAD_TRACKS = {
             speedLimit: 140,
             distance: 10.936,
             "active_since": "2025-9-6"
+        },
+        {
+            id: "am-trakia-radinovo-caracovo",
+            name: "АМ Тракия (Радиново - Царацово)",
+            startPoint: {
+                name: "Радиново",
+                "description": "Камерите са на моста при бенз. Шел, Еко, р. Хепи и р. Макдоналдс",
+                "image": "radinovo.jpg",
+                coordinates: [42.1983262, 24.640272]
+            },
+            endPoint: {
+                name: "Царацово",
+                "description": "Камерите са на мост, намиращ се до бензиностанция ЕКО",
+                "image": "caracovo.jpg",
+                coordinates: [42.207576, 24.687847]
+            },
+            speedLimit: 140,
+            distance: 4.1,
+            "active_since": "2025-11-7"
+        },
+        {
+            id: "am-trakia-caracovo-trilistnik",
+            name: "АМ Тракия (Царацово - Трилистник)",
+            startPoint: {
+                name: "Царацово",
+                "description": "Камерите са на мост, намиращ се до бензиностанция ЕКО",
+                "image": "caracovo.jpg",
+                coordinates: [42.207576, 24.687847]
+            },
+            endPoint: {
+                name: "Трилистник",
+                "description": "Камерите са на метална конструкция над пътя",
+                "image": "trilistnik.jpg",
+                coordinates: [42.216874, 24.860378]
+            },
+            speedLimit: 140,
+            distance: 14.4,
+            "active_since": "2025-11-7"
+        },
+        {
+            id: "am-trakia-trilistnik-opulchenec",
+            name: "АМ Тракия (Трилистник - Опълченец)",
+            startPoint: {
+                name: "Трилистник",
+                "description": "Камерите са на метална конструкция над пътя",
+                "image": "trilistnik.jpg",
+                coordinates: [42.216874, 24.860378]
+            },
+            endPoint: {
+                name: "Опълченец",
+                "description": "Камерите са на метална конструкция над пътя",
+                "image": "opulchenec.jpg",
+                coordinates: [42.199578, 25.121238]
+            },
+            speedLimit: 140,
+            distance: 22,
+            "active_since": "2025-11-7"
+        },
+        {
+            id: "am-trakia-opulchenec-chirpan",
+            name: "АМ Тракия (Опълченец - Чирпан)",
+            startPoint: {
+                name: "Опълченец",
+                "description": "Камерите са на метална конструкция над пътя",
+                "image": "opulchenec.jpg",
+                coordinates: [42.199578, 25.121238]
+            },
+            endPoint: {
+                name: "Чирпан",
+                "description": "Камерите са на метална конструкция над пътя",
+                "image": "chirpan.jpg",
+                coordinates: [42.200688, 25.280754]
+            },
+            speedLimit: 140,
+            distance: 13.3,
+            "active_since": "2025-11-7"
         },
         {
             id: "am-hemus-belokopitovo-kaspichan",
@@ -85,13 +180,13 @@ const ROAD_TRACKS = {
                 "name": "София",
                 "description": "Камерите са на метална конструкция над пътя",
                 "image": "am-struma-nachalo-sofia.jpg",
-                "coordinates": [42.7107206,23.2229235]
+                "coordinates": [42.7107206, 23.2229235]
             },
             endPoint: {
                 "name": "тунел Мало Бучино",
                 "description": "Камерите са на метална конструкция над пътя след/преди тунела",
                 "image": "tunel-malobuchino.jpg",
-                "coordinates": [42.6778655,23.1521632]
+                "coordinates": [42.6778655, 23.1521632]
             },
             speedLimit: 140,
             distance: 7.5,
@@ -427,13 +522,13 @@ const ROAD_TRACKS = {
                 "name": "Омуртаг",
                 "description": "Камерите са на метална конструкция над пътя",
                 "image": "omurtag.jpg",
-                "coordinates": [ 43.11822,26.4149195 ]
+                "coordinates": [43.11822, 26.4149195]
             },
             endPoint: {
                 "name": "Пролаз",
                 "description": "Камерите са на метална конструкция над пътя близо до заведение на пътя",
                 "image": "prolaz.jpg",
-                "coordinates": [ 43.196735,26.5025829 ]
+                "coordinates": [43.196735, 26.5025829]
             },
             speedLimit: 90,
             distance: 13.4,
@@ -546,13 +641,13 @@ const ROAD_TRACKS = {
                 "name": "Казанлък",
                 "description": "Камерите са на метална конструкция над пътя до бензиностанции Лукоил",
                 "image": "kazanluk.jpg",
-                "coordinates": [ 42.6135757,25.4354488 ]
+                "coordinates": [42.6135757, 25.4354488]
             },
             endPoint: {
                 "name": "Ягода",
                 "description": "Камерите са на метална конструкция над пътя",
                 "image": "qgoda.jpg",
-                "coordinates": [ 42.5475989,25.5593451 ]
+                "coordinates": [42.5475989, 25.5593451]
             },
             speedLimit: 90,
             distance: 13.2,
@@ -590,13 +685,13 @@ const ROAD_TRACKS = {
                 "name": "Килифарево",
                 "description": "Камерите са на метална конструкция над пътя",
                 "image": "kilifarevo.jpg",
-                "coordinates": [ 42.9996142,25.614714 ]
+                "coordinates": [42.9996142, 25.614714]
             },
             endPoint: {
                 "name": "Въглевци",
                 "description": "Камерите са на метална конструкция над пътя",
                 "image": "vuglevci.jpg",
-                "coordinates": [ 42.90692,25.6494827 ]
+                "coordinates": [42.90692, 25.6494827]
             },
             speedLimit: 90,
             distance: 13.2,
