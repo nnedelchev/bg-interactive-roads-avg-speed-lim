@@ -20,7 +20,7 @@ const map = L.map('map', {
     center: centerPoint,
     zoom: initialZoom,
     minZoom: minZoomLevel,
-    maxZoom: 15,
+    maxZoom: 18,
     maxBounds: BULGARIA_BOUNDS,
     maxBoundsViscosity: 1.0
 }).setView(centerPoint, initialZoom);
