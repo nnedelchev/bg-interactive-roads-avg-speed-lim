@@ -191,13 +191,13 @@ function createLegend() {
                 </div>
                 <div class="legend-color-item">
                     <div style="display: flex; align-items: center; gap: 0.5rem;">
-                        <div style="width: 30px; height: 4px; background: #2c3e50; border-radius: 2px;"></div>
+                        <div style="width: 30px; height: 4px; background: #13d90cff; border-radius: 2px;"></div>
                         <span style="font-size: 0.85rem; color: #2c3e50;">Магистрали</span>
                     </div>
                 </div>
                 <div class="legend-color-item">
                     <div style="display: flex; align-items: center; gap: 0.5rem;">
-                        <div style="width: 30px; height: 4px; background: #13d90cff; border-radius: 2px;"></div>
+                        <div style="width: 30px; height: 4px; background: #2980b9; border-radius: 2px;"></div>
                         <span style="font-size: 0.85rem; color: #2c3e50;">Пътища</span>
                     </div>
                 </div>
@@ -306,7 +306,7 @@ function createPointMarker(point, roadName, type, isNewest = false) {
     if (isNewest) {
         backgroundColor = '#FF0000'; // Red for newest roads
     } else {
-        backgroundColor = isHighway ? '#2c3e50' : '#13d90cff';
+        backgroundColor = isHighway ? '#13d90cff' : '#2980b9';
     }
 
     const marker = L.marker(point.coordinates, {

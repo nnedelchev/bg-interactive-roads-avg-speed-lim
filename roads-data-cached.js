@@ -19262,7 +19262,7 @@ const ROAD_TRACKS = {
 };
 
 const ROAD_COLORS = {
-    highways: ['#2929b9ff'],
+    highways: ['#13d90cff'],
     mainRoads: ['#2980b9'],
     secondaryRoads: ['#3498db', '#2980b9', '#1abc9c']
 };
